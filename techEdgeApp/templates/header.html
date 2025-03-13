@@ -1,0 +1,98 @@
+{% load static %}
+<!-- Topbar Start -->
+<div class="container-fluid bg-light px-0 wow fadeIn" data-wow-delay="0.1s">
+    <div class="row gx-0 align-items-center d-none d-lg-flex">
+        <div class="col-lg-6 px-5 text-start">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item"><a class="small text-secondary" href="{% url 'index' %}">Acceuil</a></li>
+                <li class="breadcrumb-item"><a class="small text-secondary" href="#">carrière</a></li>
+            </ol>
+        </div>
+        <div class="col-lg-6 px-5 text-end">
+            <small>Suivez nous sur :</small>
+            <div class="h-100 d-inline-flex align-items-center">
+                <a class="btn-square text-primary border-end rounded-0" href=""><i class="fab fa-facebook-f"></i></a>
+                <a class="btn-square text-primary border-end rounded-0" href=""><i class="fab fa-twitter"></i></a>
+                <a class="btn-square text-primary border-end rounded-0" href=""><i class="fab fa-linkedin-in"></i></a>
+                <a class="btn-square text-primary pe-0" href=""><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Topbar End -->
+
+<!-- Brand & Contact Start -->
+<div class="container-fluid py-4 px-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="row align-items-center top-bar">
+        <div class="col-lg-4 col-md-12 text-center text-lg-start">
+            <a href="{% url 'index' %}" class="navbar-brand m-0 p-0">
+                <h1 class="fw-bold text-primary m-0"><i class="fa fa-laptop-code me-3"></i>TechEdge</h1>
+            </a>
+        </div>
+        <div class="col-lg-8 col-md-7 d-none d-lg-block">
+            <div class="row">
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <div class="flex-shrink-0 btn-lg-square border rounded-circle">
+                            <i class="far fa-clock text-primary"></i>
+                        </div>
+                        <div class="ps-3">
+                            <p class="mb-2">Heure d’ouverture</p>
+                            <h6 class="mb-0">Lundi - Samedi, 09h:00 - 17h:00</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <div class="flex-shrink-0 btn-lg-square border rounded-circle">
+                            <i class="fa fa-phone text-primary"></i>
+                        </div>
+                        <div class="ps-3">
+                            <p class="mb-2">Appeler nous </p>
+                            <h6 class="mb-0">+23566098835</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <div class="flex-shrink-0 btn-lg-square border rounded-circle">
+                            <i class="far fa-envelope text-primary"></i>
+                        </div>
+                        <div class="ps-3">
+                            <p class="mb-2">Email </p>
+                            <h6 class="mb-0">techedgecenter@gmail.com</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Brand & Contact End -->
+
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+    <a href="#" class="navbar-brand ms-3 d-lg-none">MENU</a>
+    <button type="button" class="navbar-toggler me-3" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav me-auto p-3 p-lg-0">
+            <a href="{% url 'index' %}" class="nav-item nav-link active">Acceuil</a>
+            <a href="{% url 'about' %}" class="nav-item nav-link">Qui nous sommes ?</a>
+            <a href="{% url 'service' %}" class="nav-item nav-link">Services</a>
+            <a href="{% url 'project' %}" class="nav-item nav-link">Projets</a>
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Blog</a>
+                <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                    {% comment %} <a href="{% url 'feature' %}" class="dropdown-item">Futures</a> {% endcomment %}
+                    <a href="{% url 'team' %}" class="dropdown-item">Notre Equipes</a>
+                    <a href="{% url 'testimonial' %}" class="dropdown-item">Témoignage</a>
+                    {% comment %} <a href="{% url 'error_404' %}" class="dropdown-item">404 Page</a> {% endcomment %}
+                </div>
+            </div>
+            <a href="{% url 'contact' %}" class="nav-item nav-link">Contact</a>
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->

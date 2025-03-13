@@ -1,0 +1,221 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'head.html' %}
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <i class="fa fa-laptop-code fa-2x text-primary position-absolute top-50 start-50 translate-middle"></i>
+    </div>
+    <!-- Spinner End -->
+    {% include 'header.html' %}
+
+    <!-- Affichage du message de confirmation -->
+    {% if message_name %}
+    <center> 
+        <h2> Merci {{ message_name }} !</h2>
+        <p> Nous avons bien reçu votre message et vous répondrons dès que possible.</p>
+    </center>
+    {% endif %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-4 text-white animated slideInDown mb-3">Contact</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'index' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'contact' %}">Pages</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Contact</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Contact Début -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h6 class="section-title bg-white text-center text-primary px-3">Contact</h6>
+                <h1 class="display-6 mb-4">Si vous avez des questions, n'hésitez pas à nous contacter</h1>
+            </div>
+            <div class="row g-0 justify-content-center">
+                <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
+                    <p class="text-center mb-4">Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
+                    <form action="{% url 'contact' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Votre Nom" required>
+                                    <label for="name">Votre Nom</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Votre Email" required>
+                                    <label for="email">Votre Email</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Sujet" required>
+                                    <label for="subject">Objet</label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Écrivez votre message ici" id="message" name="message" style="height: 200px" required></textarea>
+                                    <label for="message">Message</label>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button class="btn btn-primary rounded-pill py-3 px-5" type="submit">Envoyer le Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact Fin -->
+    <!-- Google Map Start -->
+    <div class="container-xxl pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+        <iframe class="w-100 mb-n2" style="height: 450px;"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.866694593178!2d15.0653911!3d12.1212722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1119622510364535%3A0x9b120414fa99ba4e!2sLyc%C3%A9e%20Ibnou%20cina!5e0!3m2!1sfr!2scm!4v1738146829393!5m2!1sfr!2scm" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    </div>
+    <!-- Google Map End -->
+    {% include 'footer.html' %}
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'websiteTechEdge/lib/wow/wow.min.js' %}"></script>
+<script src="{% static 'websiteTechEdge/lib/easing/easing.min.js' %}"></script>
+<script src="{% static 'websiteTechEdge/lib/waypoints/waypoints.min.js' %}"></script>
+<script src="{% static 'websiteTechEdge/lib/counterup/counterup.min.js' %}"></script>
+<script src="{% static 'websiteTechEdge/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'websiteTechEdge/lib/lightbox/js/lightbox.min.js' %}"></script>
+
+<!-- Template Javascript -->
+<script src="{% static 'websiteTechEdge/js/main.js' %}"></script>
+</body>
+</html>
+
+
+
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'head.html' %}
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <i class="fa fa-laptop-code fa-2x text-primary position-absolute top-50 start-50 translate-middle"></i>
+    </div>
+    <!-- Spinner End -->
+    {% include 'header.html' %}
+<center> 
+    <h2> Merci {{message_name}}</h2>
+    <p> Pour votre message </p>
+</center>
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-4 text-white animated slideInDown mb-3">Contact</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'index' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'contact' %}">Pages</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Contact</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+
+   <!-- Contact Début -->
+<div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+            <h6 class="section-title bg-white text-center text-primary px-3">Contact</h6>
+            <h1 class="display-6 mb-4">Si vous avez des questions, n'hésitez pas à nous contacter -- {{name}}</h1>
+        </div>
+        <div class="row g-0 justify-content-center">
+            <div class="col-lg-8 wow fadeInUp" data-wow-delay="0.5s">
+                <p class="text-center mb-4">Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
+                <form action="{% url 'contact' %}" method="post">
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="name" placeholder="Votre Nom">
+                                <label for="name">Votre Nom</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="email" class="form-control" id="email" placeholder="Votre Email">
+                                <label for="email">Votre Email</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="subject" placeholder="Sujet">
+                                <label for="subject">Objet</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Écrivez votre message ici" id="message" style="height: 200px"></textarea>
+                                <label for="message">Message</label>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <button class="btn btn-primary rounded-pill py-3 px-5" type="submit">Envoyer le Message</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Contact Fin -->
+
+
+    <!-- Google Map Start -->
+    <div class="container-xxl pt-5 px-0 wow fadeIn" data-wow-delay="0.1s">
+        <iframe class="w-100 mb-n2" style="height: 450px;"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.866694593178!2d15.0653911!3d12.1212722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1119622510364535%3A0x9b120414fa99ba4e!2sLyc%C3%A9e%20Ibnou%20cina!5e0!3m2!1sfr!2scm!4v1738146829393!5m2!1sfr!2scm" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+            frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    </div>
+    <!-- Google Map End -->
+{% include 'footer.html' %}
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'websiteTechEdge/lib/wow/wow.min.js' %}"></script>
+<script src="{% static 'websiteTechEdge/lib/easing/easing.min.js' %}"></script>
+<script src="{% static 'websiteTechEdge/lib/waypoints/waypoints.min.js' %}"></script>
+<script src="{% static 'websiteTechEdge/lib/counterup/counterup.min.js' %}"></script>
+<script src="{% static 'websiteTechEdge/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+<script src="{% static 'websiteTechEdge/lib/lightbox/js/lightbox.min.js' %}"></script>
+
+<!-- Template Javascript -->
+<script src="{% static 'websiteTechEdge/js/main.js' %}"></script>
+</body>
+
+</html> {% endcomment %}
