@@ -4,6 +4,72 @@
 {% include 'head.html' %}
 
 <body>
+    {% include 'header.html' %}
+
+    <!-- Page Header -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-4 text-white animated slideInDown mb-3">Nos Projets</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'index' %}">Accueil</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Projets</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Projects Section -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h6 class="section-title bg-white text-center text-primary px-3">Projets</h6>
+                <h1 class="display-6 mb-4">Nos Réalisations Récents</h1>
+            </div>
+
+            <div class="row g-4">
+                {% for project in projects %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                    <div class="project-item border rounded h-100 p-4">
+                        <div class="position-relative mb-4">
+                            <img class="img-fluid rounded" src="{{ project.image.url }}" alt="{{ project.title }}">
+                            <a href="{{ project.image.url }}" data-lightbox="project">
+                                <i class="fa fa-eye fa-2x"></i>
+                            </a>
+                        </div>
+                        <h6>{{ project.title }}</h6>
+                        <span>{{ project.short_description }}</span>
+                        <a href="{% url 'project_detail' project.pk %}" class="btn btn-link p-0">
+                            Voir détails <i class="fa fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">Aucun projet disponible pour le moment.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'websiteTechEdge/lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/lightbox/js/lightbox.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/js/main.js' %}"></script>
+</body>
+</html>
+
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% include 'head.html' %}
+
+<body>
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
@@ -203,4 +269,4 @@
   <script src="{% static 'websiteTechEdge/js/main.js' %}"></script>
 </body>
 
-</html>
+</html> {% endcomment %}

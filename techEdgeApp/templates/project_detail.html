@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% include 'head.html' %}
+
+<body>
+    <!-- Spinner -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <i class="fa fa-laptop-code fa-2x text-primary position-absolute top-50 start-50 translate-middle"></i>
+    </div>
+
+    {% include 'header.html' %}
+
+    <!-- Page Header -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-4 text-white animated slideInDown mb-3">{{ project.title }}</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'home' %}">Accueil</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'projects' %}">Projets</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">{{ project.title }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Project Content -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="project-img">
+                        <img class="img-fluid rounded" src="{{ project.image.url }}" alt="{{ project.title }}">
+                        {% if project.project_url %}
+                        <div class="mt-4 text-center">
+                            <a href="{{ project.project_url }}" class="btn btn-primary" target="_blank">
+                                Voir le projet <i class="fa fa-external-link-alt ms-1"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <h1 class="display-6 mb-4">{{ project.title }}</h1>
+                    <div class="mb-4">
+                        <span class="badge bg-primary me-1">{{ project.get_category_display }}</span>
+                        {% if project.client_name %}
+                        <span class="badge bg-secondary">Client: {{ project.client_name }}</span>
+                        {% endif %}
+                    </div>
+                    <p class="lead">{{ project.short_description }}</p>
+                    <div class="project-details">
+                        {{ project.long_description|linebreaks }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Projects -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Autres Projets</h6>
+                <h1 class="display-6 mb-4">Nos réalisations similaires</h1>
+            </div>
+            <div class="row g-4">
+                {% for related in related_projects %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                    <div class="project-item">
+                        <img class="img-fluid" src="{{ related.image.url }}" alt="{{ related.title }}">
+                        <div class="project-overlay">
+                            <h5 class="text-white">{{ related.title }}</h5>
+                            <a href="{{ related.get_absolute_url }}" class="btn btn-sm btn-primary">
+                                Détails <i class="fa fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+   

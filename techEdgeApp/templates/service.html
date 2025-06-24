@@ -2,6 +2,128 @@
 <!DOCTYPE html>
 <html lang="en">
 {% include 'head.html' %}
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <i class="fa fa-laptop-code fa-2x text-primary position-absolute top-50 start-50 translate-middle"></i>
+    </div>
+    <!-- Spinner End -->
+
+    {% include 'header.html' %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-4 text-white animated slideInDown mb-3">Nos Services</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'index' %}">Accueil</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">Services</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Service Start -->
+    <!-- Services Section -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h6 class="section-title bg-white text-center text-primary px-3">Services</h6>
+                <h1 class="display-6 mb-4">Nos Solutions Complètes</h1>
+            </div>
+            
+            {% if services %}
+            <div class="row g-4">
+                {% for service in services %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                    <div class="service-item rounded h-100 p-4">
+                        <a href="{% url 'service_detail' service.slug %}">
+                            {% if service.image %}
+                            <img class="img-fluid rounded mb-4" src="{{ service.image.url }}" alt="{{ service.title }}">
+                            {% else %}
+                            <div class="bg-light rounded mb-4 p-4 text-center">
+                                <i class="fas fa-cog fa-4x text-primary"></i>
+                            </div>
+                            {% endif %}
+                            <h4>{{ service.title }}</h4>
+                            {% if service.short_description %}
+                            <p class="mb-0">{{ service.short_description }}</p>
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center">
+                <p class="text-muted">Aucun service disponible pour le moment.</p>
+                <a href="{% url 'index' %}" class="btn btn-primary">Retour à l'accueil</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% comment %} <div class="container-xxl py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h6 class="section-title bg-white text-center text-primary px-3">Services</h6>
+                <h1 class="display-6 mb-4">Des Solutions Innovantes Pour Répondre À Tous Vos Besoins</h1>
+            </div>
+            <div class="row g-4">
+                {% for service in services %}
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                    <a class="service-item d-block rounded text-center h-100 p-4" href="{% url 'service_detail' service.slug %}">
+                        {% if service.image %}
+                        <img class="img-fluid rounded mb-4" src="{{ service.image.url }}" alt="{{ service.title }}">
+                        {% else %}
+                        <div class="icon-placeholder rounded mb-4" style="height: 200px; background: #f1f1f1; display: flex; align-items: center; justify-content: center;">
+                            <i class="{{ service.icon_class|default:'fas fa-cog' }} fa-4x text-primary"></i>
+                        </div>
+                        {% endif %}
+                        <h4 class="mb-0">{{ service.title }}</h4>
+                        {% if service.short_description %}
+                        <p class="mt-2 mb-0">{{ service.short_description }}</p>
+                        {% endif %}
+                    </a>
+                </div>
+                {% empty %}
+                <div class="col-12 text-center">
+                    <p class="text-muted">Aucun service disponible pour le moment.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div> {% endcomment %}
+    <!-- Service End -->
+
+    {% include 'footer.html' %}
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'websiteTechEdge/lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/counterup/counterup.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/lightbox/js/lightbox.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'websiteTechEdge/js/main.js' %}"></script>
+</body>
+</html>
+
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+{% include 'head.html' %}
 <body>
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -31,6 +153,7 @@
 
 
     <!-- Service Start -->
+
 <div class="container-xxl py-5">
     <div class="container">
         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
@@ -76,7 +199,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
 <!-- Service End -->
 
 
@@ -155,4 +278,4 @@
  <script src="{% static 'websiteTechEdge/js/main.js' %}"></script>
 </body>
 
-</html>
+</html> {% endcomment %}

@@ -86,21 +86,21 @@
                 <div class="fact-item bg-light rounded text-center h-100 p-5">
                     <i class="fa fa-users-cog fa-4x text-primary mb-4"></i>
                     <h5 class="mb-3">Membres d'Équipe</h5>
-                    <h1 class="display-5 mb-0" data-toggle="counter-up">10</h1>
+                    <h1 class="display-5 mb-0" data-toggle="counter-up">4</h1>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                 <div class="fact-item bg-light rounded text-center h-100 p-5">
                     <i class="fa fa-users fa-4x text-primary mb-4"></i>
                     <h5 class="mb-3">Satisfaction des Clients</h5>
-                    <h1 class="display-5 mb-0" data-toggle="counter-up">10</h1>
+                    <h1 class="display-5 mb-0" data-toggle="counter-up">4</h1>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
                 <div class="fact-item bg-light rounded text-center h-100 p-5">
                     <i class="fa fa-check fa-4x text-primary mb-4"></i>
                     <h5 class="mb-3">Projets terminés</h5>
-                    <h1 class="display-5 mb-0" data-toggle="counter-up">5</h1>
+                    <h1 class="display-5 mb-0" data-toggle="counter-up">4</h1>
                 </div>
             </div>
         </div>
@@ -140,7 +140,45 @@
 
 
 <!-- Service Start -->
+<!-- Service Start -->
 <div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+            <h6 class="section-title bg-white text-center text-primary px-3">Services</h6>
+            <h1 class="display-6 mb-4">Des Solutions Innovantes Pour Répondre À Tous Vos Besoins</h1>
+        </div>
+        <div class="row g-4">
+            {% for service in featured_services %}
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.{{ forloop.counter }}s">
+                <a class="service-item d-block rounded text-center h-100 p-4" href="{% url 'service_detail' service.slug %}">
+                    {% if service.image %}
+                    <img class="img-fluid rounded mb-4" src="{{ service.image.url }}" alt="{{ service.title }}">
+                    {% else %}
+                    <div class="icon-placeholder rounded mb-4" style="height: 150px; background: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                        <i class="{{ service.icon_class|default:'fas fa-cog' }} fa-3x text-primary"></i>
+                    </div>
+                    {% endif %}
+                    <h4 class="mb-0">{{ service.title }}</h4>
+                    {% if service.short_description %}
+                    <p class="mt-2 mb-0 small">{{ service.short_description|truncatechars:80 }}</p>
+                    {% endif %}
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Aucun service disponible pour le moment.</p>
+            </div>
+            {% endfor %}
+            
+            <!-- Lien vers tous les services -->
+            <div class="col-12 text-center mt-4 wow fadeInUp" data-wow-delay="0.1s">
+                <a href="{% url 'service' %}" class="btn btn-primary py-3 px-5">Voir tous nos services</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Service End -->
+{% comment %} <div class="container-xxl py-5">
     <div class="container">
         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
             <h6 class="section-title bg-white text-center text-primary px-3">Services</h6>
@@ -186,7 +224,7 @@
         </div>
     </div>
 </div>
-<!-- Service End -->
+<!-- Service End --> {% endcomment %}
 
 <!-- Feature Start -->
 <div class="container-xxl py-5">
@@ -245,7 +283,34 @@
 <!-- Feature End -->
 
 <!-- Project Start -->
+<!-- Project Start -->
 <div class="container-xxl py-5">
+    <div class="container">
+        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+            <h6 class="section-title bg-white text-center text-primary px-3">Projets</h6>
+            <h1 class="display-6 mb-4">Découvrez Nos Réalisations</h1>
+        </div>
+        <div class="owl-carousel project-carousel wow fadeInUp" data-wow-delay="0.1s">
+            {% for project in featured_projects %}
+            <div class="project-item border rounded h-100 p-4" data-dot="0{{ forloop.counter }}">
+                <div class="position-relative mb-4">
+                    <img class="img-fluid rounded" src="{{ project.image.url }}" alt="{{ project.title }}">
+                    <a href="{{ project.image.url }}" data-lightbox="project">
+                        <i class="fa fa-eye fa-2x"></i>
+                    </a>
+                </div>
+                <h6>{{ project.title }}</h6>
+                <span>{{ project.short_description }}</span>
+                <a href="{% url 'project_detail' project.pk %}" class="btn btn-link p-0">
+                    Voir détails <i class="fa fa-arrow-right ms-1"></i>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- Project End -->
+{% comment %} <div class="container-xxl py-5">
     <div class="container">
         <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
             <h6 class="section-title bg-white text-center text-primary px-3">Nos Projets</h6>
@@ -334,7 +399,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> {% endcomment %}
 <!-- Project End -->
 <!-- Team Start -->
 <div class="container-xxl py-5">
@@ -423,43 +488,43 @@
         <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
             <div class="testimonial-item bg-light rounded p-4">
                 <div class="d-flex align-items-center mb-4">
-                    <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'websiteTechEdge/img/testimonial-1.jpg' %}" alt="">
+                    <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'websiteTechEdge/img/salam.png' %}" alt="">
                     <div class="ms-4">
-                        <h5 class="mb-1">Nom du Client</h5>
-                        <span>Profession</span>
+                        <h5 class="mb-1">Salam Solution Services</h5>
+                        <span>Entreprise </span>
                     </div>
                 </div>
                 <p class="mb-0">Un service exceptionnel ! L'équipe de TechEdge a su comprendre nos besoins et fournir une solution adaptée.</p>
             </div>
             <div class="testimonial-item bg-light rounded p-4">
                 <div class="d-flex align-items-center mb-4">
-                    <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'websiteTechEdge/img/testimonial-2.jpg' %}" alt="">
+                    <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'websiteTechEdge/img/apex.png' %}" alt="">
                     <div class="ms-4">
-                        <h5 class="mb-1">Nom du Client</h5>
-                        <span>Profession</span>
+                        <h5 class="mb-1">Cabinet Apex</h5>
+                        <span>Cabinet d'Audit et Comptable</span>
                     </div>
                 </div>
-                <p class="mb-0">Grâce à TechEdge, nous avons pu améliorer notre productivité avec des outils performants et adaptés à notre entreprise.</p>
+                <p class="mb-0">Grâce à TechEdge, nous avons un site de notre entreprise en ligne , merci pour le service rendu.</p>
             </div>
             <div class="testimonial-item bg-light rounded p-4">
                 <div class="d-flex align-items-center mb-4">
-                    <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'websiteTechEdge/img/testimonial-3.jpg' %}" alt="">
+                    <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'websiteTechEdge/img/positif.png' %}" alt="">
                     <div class="ms-4">
-                        <h5 class="mb-1">Nom du Client</h5>
-                        <span>Profession</span>
-                    </div>
+                        <h5 class="mb-1">Cabinet Positif Impact</h5>
+                        <span>Cabinet d'expertise Comptable</span>
+                    </div> 
                 </div>
-                <p class="mb-0">Je recommande vivement TechEdge ! Une équipe professionnelle et à l'écoute, avec un excellent service après-vente.</p>
+                <p class="mb-0">Je recommande vivement TechEdge ! Une équipe professionnelle et à l'écoute, avec un excellent service.</p>
             </div>
             <div class="testimonial-item bg-light rounded p-4">
                 <div class="d-flex align-items-center mb-4">
-                    <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'websiteTechEdge/img/testimonial-4.jpg' %}" alt="">
+                    <img class="flex-shrink-0 rounded-circle border p-1" src="{% static 'websiteTechEdge/img/chadauto.png' %}" alt="">
                     <div class="ms-4">
-                        <h5 class="mb-1">Nom du Client</h5>
-                        <span>Profession</span>
+                        <h5 class="mb-1">Chadautoandhouse</h5>
+                        <span>Client particulier</span>
                     </div>
                 </div>
-                <p class="mb-0">Une collaboration enrichissante ! Nos formations en anglais et en leadership ont grandement aidé nos équipes.</p>
+                <p class="mb-0">Je recommande vivement TechEdge ! Une équipe professionnelle et à l'écoute, avec un excellent service</p>
             </div>
         </div>
     </div>
