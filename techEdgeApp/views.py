@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Service, TeamMember, Project, Testimonial, Fact
 
-
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.conf import settings
-from .form import ContactForm
+from .form import ContactForm,SubscriberForm
 from .models import Service, Project
 from techEdgeApp import models
 from .models import Service
@@ -31,10 +30,13 @@ def index(request):
 def about(request):
     return render(request, 'about.html')
 
-# Vue pour la page "Services"
-# def service(request):
-#     all_services = Service.objects.all().order_by('display_order')
-#     return render(request, 'service.html', {'service': all_services})
+def subscribe_newsletter(request):
+    if request.method == 'POST':
+        form = SubscriberForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('index')  # ou afficher un message de succès
+    return redirect('index')
 
 def service(request):
     services_list = Service.objects.all().order_by('display_order')
@@ -42,10 +44,7 @@ def service(request):
         'services': services_list  # Ceci est la variable qui sera utilisée dans le template
     }
     return render(request, 'service.html', context)
-# Vue pour la page "Projets"
-# def project(request):
-#     project = Project.objects.all().order_by('-project_date', 'display_order')
-#     return render(request, 'project.html', {'project': project})
+
 def project(request):
     #projects_list = Project.objects.all().order_by('-is_featured', 'display_order')
     all_projects = Project.objects.all().order_by('-is_featured', 'display_order', '-project_date')
@@ -68,7 +67,7 @@ def service_detail(request, slug):
 
 def project_detail(request, pk):
     project = get_object_or_404(Project, pk=pk)
-    related_projects = Project.objects.exclude(id=project.id).filter(category=project.category).order_by('?')[:3]
+    related_projects = Project.objects.exclude(pk=pk)[:3]  # Exemple
     return render(request, 'project_detail.html', {
         'project': project,
         'related_projects': related_projects
@@ -117,20 +116,17 @@ def contact(request):
     if request.method == "POST":
         message_name = request.POST['name']
         message_email = request.POST['email']
-        objet = request.POST['subject']
+        objet = request.POST['subject'] 
         message = request.POST['message'] 
         
         send_mail(
             message_name,
             message,
             message_email,
-            ['oumartom45@gmail.com'],
+            ['techedgecenter@gmail.com'],
             
         )
         return render(request, 'contact.html',{'name': message_name})
     else:
         return render(request, 'contact.html')
 
-# Vue pour la page d'erreur 404
-def error_404(request, exception=None):
-    return render(request, '404.html', status=404)

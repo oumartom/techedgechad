@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import Service, TeamMember, Project, Testimonial, Fact
-
+from .models import Subscriber
+from .models import Subscriber
+admin.site.register(Subscriber)
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('title', 'is_featured', 'display_order', 'image_preview')
@@ -53,3 +55,4 @@ class FactAdmin(admin.ModelAdmin):
     list_display = ('title', 'value', 'suffix', 'get_icon_display', 'display_order')
     list_editable = ('display_order',)
     search_fields = ('title',)
+    

@@ -11,4 +11,3 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),  # Page "Contact"
     path('404/', views.error_404, name='404'),  # Page d'erreur 404
 ]
-]

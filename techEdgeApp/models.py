@@ -90,6 +90,8 @@ class Project(models.Model):
     
     def __str__(self):
         return self.title
+    def get_absolute_url(self):
+        return reverse('project_detail', args=[str(self.pk)])
 
 class Testimonial(models.Model):
     client_name = models.CharField("Nom du client", max_length=100)
@@ -136,3 +138,10 @@ class Fact(models.Model):
     
     def get_icon_class(self):
         return f"fa fa-{self.icon}"
+    
+class Subscriber(models.Model):
+    email = models.EmailField(unique=True)
+    date_subscribed = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.email
