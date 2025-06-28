@@ -1,4 +1,38 @@
 {% load static %}
+<!-- Navbar Start -->
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+    <a href="{% url 'index' %}" class="navbar-brand d-flex align-items-center">
+        <img src="{% static 'websiteTechEdge/img/logo4.jpg' %}" alt="TechEdge Logo" style="height: 40px; margin-right: 10px;">
+        <span class="text-white fw-bold">TechEdge</span>
+    </a>
+
+    <!-- BOUTON TOGGLER MOBILE -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-3 p-lg-0">
+            <a href="{% url 'index' %}" class="nav-item nav-link {% if request.path == '/' %}active{% endif %}">Accueil</a>
+            <a href="{% url 'about' %}" class="nav-item nav-link {% if request.path == '/about/' %}active{% endif %}">Qui nous sommes ?</a>
+            <a href="{% url 'service' %}" class="nav-item nav-link {% if request.path == '/services/' %}active{% endif %}">Services</a>
+            <a href="{% url 'project' %}" class="nav-item nav-link {% if request.path == '/projects/' %}active{% endif %}">Projets</a>
+
+            <div class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle {% if request.path == '/team/' or request.path == '/testimonial/' %}active{% endif %}" data-bs-toggle="dropdown">Blog</a>
+                <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
+                    <a href="{% url 'team' %}" class="dropdown-item {% if request.path == '/team/' %}active{% endif %}">Notre Equipe</a>
+                    <a href="{% url 'testimonial' %}" class="dropdown-item {% if request.path == '/testimonial/' %}active{% endif %}">Témoignage</a>
+                </div>
+            </div>
+
+            <a href="{% url 'contact' %}" class="nav-item nav-link {% if request.path == '/contact/' %}active{% endif %}">Contact</a>
+        </div>
+    </div>
+</nav>
+<!-- Navbar End -->
+
 <!-- Topbar Start -->
 {% comment %} <div class="container-fluid bg-light px-0 wow fadeIn" data-wow-delay="0.1s">
     <div class="row gx-0 align-items-center d-none d-lg-flex">
@@ -73,7 +107,7 @@
 <!-- Brand & Contact End -->
 
 <!-- Navbar Start -->
-<nav class="navbar navbar-expand-lg bg-primary navbar-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
+{% comment %} <nav class="navbar navbar-expand-lg bg-primary navbar-dark sticky-top py-lg-0 px-lg-5 wow fadeIn" data-wow-delay="0.1s">
     <a href="{% url 'index' %}" class="navbar-brand d-flex align-items-center">
         <img src="{% static 'websiteTechEdge/img/logo4.jpg' %}" alt="TechEdge Logo" style="height: 40px; margin-right: 10px;">
         <span class="text-white fw-bold">TechEdge</span>
@@ -97,7 +131,7 @@
             <a href="{% url 'contact' %}" class="nav-item nav-link {% if request.path == '/contact/' %}active{% endif %}">Contact</a>
         </div>
     </div>
-</nav>
+</nav> {% endcomment %}
 
 
 <!-- Navbar End -->

@@ -8,7 +8,45 @@ from .form import ContactForm,SubscriberForm
 from .models import Service, Project
 from techEdgeApp import models
 from .models import Service
-# Create your views here.
+# views.py
+
+
+# import openai
+# from django.http import JsonResponse
+# from django.views.decorators.csrf import csrf_exempt
+# import json
+# from django.conf import settings
+# # Create your views here.
+
+# @csrf_exempt
+# def chatbot(request):
+#     if request.method == 'POST':
+#         data = json.loads(request.body)
+#         user_message = data.get('message')
+#         print("Message reçu:", user_message)  # ⬅️ debug
+
+#         if not user_message:
+#             return JsonResponse({'error': 'Message vide'}, status=400)
+
+#         try:
+#             openai.api_key = settings.OPENAI_API_KEY
+            
+#             response = openai.ChatCompletion.create(
+#                 model="gpt-3.5-turbo",
+#                 messages=[
+#                     {"role": "system", "content": "Tu es TechEdge Assistant, un expert en solutions informatiques."},
+#                     {"role": "user", "content": user_message},
+#                 ]
+#             )
+#             assistant_reply = response['choices'][0]['message']['content']
+#             print("Réponse:", assistant_reply)  # ⬅️ debug
+#             return JsonResponse({'reply': assistant_reply})
+#         except Exception as e:
+#             print("Erreur OpenAI:", str(e))  # ⬅️ debug
+#             return JsonResponse({'error': str(e)}, status=500)
+#     else:
+#         return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
+
 def index(request):
     services = Service.objects.filter(is_featured=True)[:6]
     team_members = TeamMember.objects.filter(is_active=True).order_by('display_order')[:4]
