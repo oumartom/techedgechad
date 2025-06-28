@@ -73,7 +73,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'techEdgeWebSite.wsgi.application'
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
