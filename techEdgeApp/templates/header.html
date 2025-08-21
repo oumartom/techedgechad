@@ -19,18 +19,49 @@
             <a href="{% url 'service' %}" class="nav-item nav-link {% if request.path == '/services/' %}active{% endif %}">Services</a>
             <a href="{% url 'project' %}" class="nav-item nav-link {% if request.path == '/projects/' %}active{% endif %}">Projets</a>
 
+            <!-- Dropdown TechEdge -->
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle {% if request.path == '/team/' or request.path == '/testimonial/' %}active{% endif %}" data-bs-toggle="dropdown">Blog</a>
-                <div class="dropdown-menu border-0 rounded-0 rounded-bottom m-0">
-                    <a href="{% url 'team' %}" class="dropdown-item {% if request.path == '/team/' %}active{% endif %}">Notre Equipe</a>
-                    <a href="{% url 'testimonial' %}" class="dropdown-item {% if request.path == '/testimonial/' %}active{% endif %}">Nos Références</a>
-                </div>
+                <a href="#" class="nav-link dropdown-toggle {% if request.path == '/team/' or request.path == '/testimonial/' %}active{% endif %}" 
+                   id="techEdgeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    TechEdge
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="techEdgeDropdown">
+                    <li><a href="{% url 'team' %}" class="dropdown-item {% if request.path == '/team/' %}active{% endif %}">Notre Équipe</a></li>
+                    <li><a href="{% url 'testimonial' %}" class="dropdown-item {% if request.path == '/testimonial/' %}active{% endif %}">Nos Références</a></li>
+                </ul>
             </div>
 
             <a href="{% url 'contact' %}" class="nav-item nav-link {% if request.path == '/contact/' %}active{% endif %}">Contact</a>
         </div>
     </div>
 </nav>
+
+<!-- Style pour améliorer l'affichage mobile -->
+<style>
+@media (max-width: 991.98px) {
+    .navbar-nav .dropdown-menu {
+        background-color: #2c3e50 !important;
+        border: none;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    
+    .navbar-nav .dropdown-item {
+        color: #ecf0f1 !important;
+        padding: 0.5rem 1rem;
+    }
+    
+    .navbar-nav .dropdown-item:hover,
+    .navbar-nav .dropdown-item:focus {
+        background-color: #34495e !important;
+        color: white !important;
+    }
+    
+    .dropdown-menu {
+        border-radius: 0.375rem;
+    }
+}
+</style>
 <!-- Navbar End -->
 
 <!-- Topbar Start -->

@@ -66,8 +66,8 @@ def index(request):
 
 # Vue pour la page "À propos"
 def about(request):
-    return render(request, 'about.html')
-
+    team_members = TeamMember.objects.all()  # récupère les membres
+    return render(request, 'about.html', {'team_members': team_members})
 def subscribe_newsletter(request):
     if request.method == 'POST':
         form = SubscriberForm(request.POST)
@@ -121,8 +121,11 @@ def team(request):
 
 # Vue pour la page "Témoignages"
 def testimonial(request):
-    return render(request, 'testimonial.html')
-
+    
+    testimonials = Testimonial.objects.filter(is_featured=True).order_by('display_order')
+    return render(request, 'testimonial.html', {'testimonials': testimonials})
+# Vue pour la page "Contact"
+# Vue pour la page "Contact"
 # Vue pour la page "Contact"
 def contact(request):
     if request.method == 'POST':
@@ -134,21 +137,50 @@ def contact(request):
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
 
-            # Envoyer un email (exemple)
-            send_mail(
-                f"{subject} - Message de {name}",
-                f"De : {name} <{email}>\n\n{message}",
-                email,  # Expéditeur
-                [settings.EMAIL_HOST_USER],  # Destinataire
-                fail_silently=False,
+            # CORRECTION : Utiliser EmailMessage au lieu de send_mail
+            from django.core.mail import EmailMessage
+            
+            email_message = EmailMessage(
+                subject=f"{subject} - Message de {name}",  # Sujet
+                body=f"Nom: {name}\nEmail: {email}\n\nMessage:\n{message}",  # Corps du message
+                from_email=settings.EMAIL_HOST_USER,  # Expéditeur = ton email LWS ✅
+                to=[settings.EMAIL_HOST_USER],  # Destinataire = ton email LWS ✅
+                reply_to=[f"{name} <{email}>"]  # Pour répondre à l'utilisateur ✅
             )
+            
+            email_message.send(fail_silently=False)
 
             # Rediriger vers une page de confirmation
             return render(request, 'contact.html', {'message_name': name})
     else:
         form = ContactForm()
 
-    return render(request, 'contact.html',{'form': form})
+    return render(request, 'contact.html', {'form': form})
+# def contact(request):
+#     if request.method == 'POST':
+#         form = ContactForm(request.POST)
+#         if form.is_valid():
+#             # Récupérer les données du formulaire
+#             name = form.cleaned_data['name']
+#             email = form.cleaned_data['email']
+#             subject = form.cleaned_data['subject']
+#             message = form.cleaned_data['message']
+
+#             # Envoyer un email (exemple)
+#             send_mail(
+#                 f"{subject} - Message de {name}",
+#                 f"De : {name} <{email}>\n\n{message}",
+#                 email,  # Expéditeur
+#                 [settings.EMAIL_HOST_USER],  # Destinataire
+#                 fail_silently=False,
+#             )
+
+#             # Rediriger vers une page de confirmation
+#             return render(request, 'contact.html', {'message_name': name})
+#     else:
+#         form = ContactForm()
+
+#     return render(request, 'contact.html',{'form': form})
 
 # def contact(request):
     if request.method == "POST":

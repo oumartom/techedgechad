@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from decouple import config
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -134,12 +135,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Email config
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
-EMAIL_HOST_USER = 'techedgecenter@gmail.com'
-EMAIL_HOST_PASSWORD = 'ibdv jzmx bgot dpnv'
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = config("EMAIL_HOST")
+EMAIL_PORT = config("EMAIL_PORT", cast=int)
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool, default=False)
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", cast=bool, default=False)  # ← Default à True
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = '1025'
