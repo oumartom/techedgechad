@@ -97,7 +97,13 @@ class Project(models.Model):
     short_description = models.CharField("Description courte", max_length=200)
     long_description = models.TextField("Description détaillée")
     image = models.ImageField("Image principale", upload_to='projects/')
-    category = models.CharField("Catégorie", max_length=20, choices=PROJECT_CATEGORIES)
+    category = models.CharField(
+    "Catégorie", 
+    max_length=20, 
+    choices=PROJECT_CATEGORIES, 
+    blank=True, 
+    null=True
+)
     client_name = models.CharField("Client", max_length=100, blank=True)
     project_date = models.DateField("Date du projet", blank=True, null=True)
     project_url = models.URLField("URL du projet", blank=True)
