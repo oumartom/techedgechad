@@ -4,26 +4,26 @@ from django.utils.text import slugify
 from django.urls import reverse
 
 
-class ProjectCategory(models.Model):
-    name = models.CharField("Nom de la catégorie", max_length=100)
-    slug = models.SlugField("Slug", unique=True)
-    description = models.TextField("Description", blank=True)
-    icon = models.CharField("Icône FontAwesome", max_length=50, default="fas fa-folder")
-    display_order = models.PositiveIntegerField("Ordre d'affichage", default=0)
-    is_active = models.BooleanField("Active", default=True)
+# class ProjectCategory(models.Model):
+#     name = models.CharField("Nom de la catégorie", max_length=100)
+#     slug = models.SlugField("Slug", unique=True)
+#     description = models.TextField("Description", blank=True)
+#     icon = models.CharField("Icône FontAwesome", max_length=50, default="fas fa-folder")
+#     display_order = models.PositiveIntegerField("Ordre d'affichage", default=0)
+#     is_active = models.BooleanField("Active", default=True)
 
-    class Meta:
-        verbose_name = "Catégorie de projet"
-        verbose_name_plural = "Catégories de projet"
-        ordering = ['display_order', 'name']
+#     class Meta:
+#         verbose_name = "Catégorie de projet"
+#         verbose_name_plural = "Catégories de projet"
+#         ordering = ['display_order', 'name']
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         if not self.slug:
+#             self.slug = slugify(self.name)
+#         super().save(*args, **kwargs)
 
 class Service(models.Model):
     title = models.CharField("Titre", max_length=100)

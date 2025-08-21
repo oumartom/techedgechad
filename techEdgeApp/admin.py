@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Service, TeamMember, Project, Testimonial, Fact,ProjectCategory
+from .models import Service, TeamMember, Project, Testimonial, Fact
 from .models import Subscriber
 from .models import Subscriber
 admin.site.register(Subscriber)
@@ -85,12 +85,12 @@ class FactAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     
 # admin.py
-@admin.register(ProjectCategory)
-class ProjectCategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'display_order', 'is_active', 'project_count')
-    list_editable = ('display_order', 'is_active')
-    prepopulated_fields = {'slug': ('name',)}
+# @admin.register(ProjectCategory)
+# class ProjectCategoryAdmin(admin.ModelAdmin):
+#     list_display = ('name', 'slug', 'display_order', 'is_active', 'project_count')
+#     list_editable = ('display_order', 'is_active')
+#     prepopulated_fields = {'slug': ('name',)}
     
-    def project_count(self, obj):
-        return obj.project_set.count()
-    project_count.short_description = 'Nombre de projets'
+#     def project_count(self, obj):
+#         return obj.project_set.count()
+#     project_count.short_description = 'Nombre de projets'
