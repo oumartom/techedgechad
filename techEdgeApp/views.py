@@ -48,6 +48,8 @@ from .models import Service
 #         return JsonResponse({'error': 'Méthode non autorisée'}, status=405)
 
 def index(request):
+    if not all([settings.CLOUDINARY_CLOUD_NAME, settings.CLOUDINARY_API_KEY, settings.CLOUDINARY_API_SECRET]):
+        print("ATTENTION: Configuration Cloudinary incomplète")
     services = Service.objects.filter(is_featured=True)[:6]
     team_members = TeamMember.objects.filter(is_active=True).order_by('display_order')[:4]
     featured_projects = Project.objects.filter(is_featured=True)[:6]
