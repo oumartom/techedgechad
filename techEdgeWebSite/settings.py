@@ -165,6 +165,7 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+print("Cloudinary config:", os.getenv("CLOUDINARY_CLOUD_NAME"))
 if not DEBUG:
     # Vérification des variables Cloudinary en production
     required_env_vars = ['CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET']
