@@ -289,6 +289,11 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# URL d'accès aux fichiers uploadés
+MEDIA_URL = '/media/'
+
+# Dossier où Django stocke les fichiers uploadés
+MEDIA_ROOT = BASE_DIR / "media"
 # Configuration Cloudinary
 CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUD_NAME') or os.environ.get('CLOUDINARY_CLOUD_NAME')
 CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
