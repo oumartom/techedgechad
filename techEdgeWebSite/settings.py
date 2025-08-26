@@ -178,6 +178,8 @@ import dj_database_url
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
+import sys
+
 # Charger .env
 load_dotenv()
 
@@ -204,7 +206,6 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
     'techEdgeApp',
-    
 ]
 
 MIDDLEWARE = [
@@ -254,7 +255,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
-import sys
 
 LOGGING = {
     "version": 1,
@@ -270,18 +270,26 @@ LOGGING = {
         "level": "DEBUG",
     },
 }
+
 # Internationalization
 LANGUAGE_CODE = 'fr-fr'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static & Media
-# Config Cloudinary
-# Configuration Cloudinary - AVANT les autres configurations
-CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUD_NAME')
+# Static files
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Configuration Cloudinary
+CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUD_NAME') or os.environ.get('CLOUDINARY_CLOUD_NAME')
 CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
 CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
+
+print(f"Debug Cloudinary - CLOUD_NAME: {os.environ.get('CLOUD_NAME')}")
+print(f"Debug Cloudinary - CLOUDINARY_API_KEY: {os.environ.get('CLOUDINARY_API_KEY') is not None}")
+print(f"Debug Cloudinary - CLOUDINARY_API_SECRET: {os.environ.get('CLOUDINARY_API_SECRET') is not None}")
 
 # Configurer Cloudinary explicitement
 if all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET]):
@@ -298,22 +306,12 @@ if all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET]):
         'API_SECRET': CLOUDINARY_API_SECRET,
     }
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    print("✅ Cloudinary configuré avec succès!")
 else:
-    print("ATTENTION: Variables Cloudinary manquantes. Utilisation du stockage local.")
+    print("⚠️ ATTENTION: Variables Cloudinary manquantes. Utilisation du stockage local.")
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-# Configuration du storage pour les médias
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# Static files (WhiteNoise pour les statics, Cloudinary pour les médias)
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -327,13 +325,14 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-print("Cloudinary config:", os.getenv("CLOUDINARY_CLOUD_NAME"))
+# Vérification finale des variables
 if not DEBUG:
-    # Vérification des variables Cloudinary en production
-    required_env_vars = ['CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET']
-    for var in required_env_vars:
-        if not os.environ.get(var):
-            print(f"ATTENTION: Variable d'environnement manquante: {var}")
+    required_env_vars = ['CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET']
+    missing_vars = [var for var in required_env_vars if not os.environ.get(var)]
+    if missing_vars:
+        print(f"❌ Variables d'environnement manquantes: {missing_vars}")
+    else:
+        print("✅ Toutes les variables Cloudinary sont présentes")
 #config cloudinary
 
 
