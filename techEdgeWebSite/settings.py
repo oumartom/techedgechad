@@ -180,7 +180,7 @@ import cloudinary.uploader
 import cloudinary.api
 import sys
 
-# Charger .env
+# Charger .env en local
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -279,31 +279,15 @@ USE_TZ = True
 
 # URL d'accès aux fichiers statiques
 STATIC_URL = '/static/'
-
-# Emplacement des fichiers statiques "globaux"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",   # Ici tu as mis ton dossier static
-]
-
-# Dossier où collectstatic regroupe tous les fichiers pour la prod
+STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# URL d'accès aux fichiers uploadés
-MEDIA_URL = '/media/'
 
-# Dossier où Django stocke les fichiers uploadés
-MEDIA_ROOT = BASE_DIR / "media"
-# Configuration Cloudinary
-CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUD_NAME') or os.environ.get('CLOUDINARY_CLOUD_NAME')
-CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
-CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
+# Configuration Cloudinary (Médias)
+CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME")
+CLOUDINARY_API_KEY = os.environ.get("CLOUDINARY_API_KEY")
+CLOUDINARY_API_SECRET = os.environ.get("CLOUDINARY_API_SECRET")
 
-print(f"Debug Cloudinary - CLOUD_NAME: {os.environ.get('CLOUD_NAME')}")
-print(f"Debug Cloudinary - CLOUDINARY_API_KEY: {os.environ.get('CLOUDINARY_API_KEY') is not None}")
-print(f"Debug Cloudinary - CLOUDINARY_API_SECRET: {os.environ.get('CLOUDINARY_API_SECRET') is not None}")
-
-# Configurer Cloudinary explicitement
 if all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET]):
     cloudinary.config(
         cloud_name=CLOUDINARY_CLOUD_NAME,
@@ -311,19 +295,13 @@ if all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET]):
         api_secret=CLOUDINARY_API_SECRET,
         secure=True
     )
-    
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
-        'API_KEY': CLOUDINARY_API_KEY,
-        'API_SECRET': CLOUDINARY_API_SECRET,
-    }
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
     print("✅ Cloudinary configuré avec succès!")
 else:
     print("⚠️ ATTENTION: Variables Cloudinary manquantes. Utilisation du stockage local.")
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+    MEDIA_ROOT = BASE_DIR / "media"
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -337,14 +315,6 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-# Vérification finale des variables
-if not DEBUG:
-    required_env_vars = ['CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET']
-    missing_vars = [var for var in required_env_vars if not os.environ.get(var)]
-    if missing_vars:
-        print(f"❌ Variables d'environnement manquantes: {missing_vars}")
-    else:
-        print("✅ Toutes les variables Cloudinary sont présentes")
 #config cloudinary
 
 
