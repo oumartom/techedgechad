@@ -279,21 +279,21 @@ USE_TZ = True
 # Static & Media
 # Config Cloudinary
 # Configuration Cloudinary - AVANT les autres configurations
-CLOUD_NAME = os.environ.get('CLOUD_NAME')
+CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUD_NAME')
 CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
 CLOUDINARY_API_SECRET = os.environ.get('CLOUDINARY_API_SECRET')
 
 # Configurer Cloudinary explicitement
-if all([CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET]):
+if all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET]):
     cloudinary.config(
-        cloud_name=CLOUD_NAME,
+        cloud_name=CLOUDINARY_CLOUD_NAME,
         api_key=CLOUDINARY_API_KEY,
         api_secret=CLOUDINARY_API_SECRET,
         secure=True
     )
     
     CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': CLOUD_NAME,
+        'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
         'API_KEY': CLOUDINARY_API_KEY,
         'API_SECRET': CLOUDINARY_API_SECRET,
     }
@@ -327,10 +327,10 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-print("Cloudinary config:", os.getenv("CLOUD_NAME"))
+print("Cloudinary config:", os.getenv("CLOUDINARY_CLOUD_NAME"))
 if not DEBUG:
     # Vérification des variables Cloudinary en production
-    required_env_vars = ['CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET']
+    required_env_vars = ['CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET']
     for var in required_env_vars:
         if not os.environ.get(var):
             print(f"ATTENTION: Variable d'environnement manquante: {var}")
