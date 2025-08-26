@@ -277,17 +277,18 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# URL d'accès aux fichiers statiques
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Dossiers supplémentaires pour les fichiers statiques
+# Emplacement des fichiers statiques "globaux"
 STATICFILES_DIRS = [
-    BASE_DIR / "techEdgeApp/static",  # Chemin vers vos fichiers statiques
+    BASE_DIR / "static",   # Ici tu as mis ton dossier static
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Dossier où collectstatic regroupe tous les fichiers pour la prod
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Configuration Cloudinary
 CLOUDINARY_CLOUD_NAME = os.environ.get('CLOUD_NAME') or os.environ.get('CLOUDINARY_CLOUD_NAME')
 CLOUDINARY_API_KEY = os.environ.get('CLOUDINARY_API_KEY')
