@@ -277,9 +277,15 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Dossiers supplémentaires pour les fichiers statiques
+STATICFILES_DIRS = [
+    BASE_DIR / "techEdgeApp/static",  # Chemin vers vos fichiers statiques
+]
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Configuration Cloudinary
