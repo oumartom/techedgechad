@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.urls import reverse
 from django.conf import settings
-
+from cloudinary.models import CloudinaryField
 # Déterminer le type de champ image à utiliser
 def get_image_field():
     """Retourne le champ approprié selon la configuration"""
@@ -68,7 +68,8 @@ class TeamMember(models.Model):
     position_type = models.CharField("Type de poste", max_length=20, 
                                     choices=POSITION_CHOICES, default='technical')
     bio = models.TextField("Biographie", blank=True)
-    image = models.ImageField("Photo", upload_to='team/', null=True, blank=True)
+    # image = models.ImageField("Photo", upload_to='team/', null=True, blank=True)
+    image = CloudinaryField('image')
     facebook = models.URLField("Facebook", blank=True)
     twitter = models.URLField("Twitter", blank=True)
     linkedin = models.URLField("LinkedIn", blank=True)
