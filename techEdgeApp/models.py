@@ -33,7 +33,7 @@ class Service(models.Model):
     icon_class = models.CharField("Classe d'icône", max_length=50, blank=True, 
                                  help_text="Ex: fa fa-laptop-code")
     # Utilisation directe de CloudinaryField pour être sûr
-    image = models.ImageField("Image", upload_to='services/', null=True, blank=True)
+    image = CloudinaryField('image')
     slug = models.SlugField(unique=True, blank=True)
     is_featured = models.BooleanField("Mettre en avant", default=False,
                                     help_text="Cocher pour afficher ce service en page d'accueil")
@@ -98,7 +98,7 @@ class Project(models.Model):
     title = models.CharField("Titre", max_length=100)
     short_description = models.CharField("Description courte", max_length=200)
     long_description = models.TextField("Description détaillée")
-    image = models.ImageField("Image principale", upload_to='projects/', null=True, blank=True)
+    image = CloudinaryField('image')
     category = models.CharField(
         "Catégorie", 
         max_length=20, 
@@ -128,7 +128,7 @@ class Testimonial(models.Model):
     company = models.CharField("Entreprise", max_length=100, blank=True)
     profession = models.CharField("Profession", max_length=100)
     content = models.TextField("Témoignage")
-    image = models.ImageField("Photo", upload_to='testimonials/', null=True, blank=True)
+    image = CloudinaryField('image')
     rating = models.PositiveSmallIntegerField("Note (1-5)", default=5)
     is_featured = models.BooleanField("En vedette", default=False)
     display_order = models.PositiveIntegerField("Ordre d'affichage", default=0)
