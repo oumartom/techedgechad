@@ -38,15 +38,14 @@
                 <p class="mb-0">Chez TechEdge Chad, nous transformons vos idées en solutions digitales concrètes. Explorez nos projets phares et laissez-vous inspirer.</p>
             </div>
 
-            <!-- Filtres par catégorie -->
+              <!-- Filtres par catégorie -->
             <div class="row mb-4 wow fadeInUp" data-wow-delay="0.2s">
                 <div class="col-12 text-center">
                     <div class="btn-group" role="group" aria-label="Filtres projets">
                         <button type="button" class="btn btn-outline-primary active" data-filter="all">Tous les projets</button>
-                        <button type="button" class="btn btn-outline-primary" data-filter="web">Développement Web</button>
-                        <button type="button" class="btn btn-outline-primary" data-filter="mobile">Applications Mobile</button>
-                        <button type="button" class="btn btn-outline-primary" data-filter="design">Design & Infographie</button>
-                        <button type="button" class="btn btn-outline-primary" data-filter="formation">Formations</button>
+                        {% for value, label in project_categories %}
+                        <button type="button" class="btn btn-outline-primary" data-filter="{{ value }}">{{ label }}</button>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -54,7 +53,7 @@
             <!-- Grille des projets -->
             <div class="row g-4 portfolio-container wow fadeInUp" data-wow-delay="0.3s">
                 {% for project in projects %}
-                <div class="col-lg-4 col-md-6 portfolio-item" data-category="{{ project.category.slug|default:'web' }}">
+                <div class="col-lg-4 col-md-6 portfolio-item" data-category="{{ project.category }}">
                     <div class="project-card border rounded h-100 overflow-hidden">
                         <div class="position-relative">
                             <img class="img-fluid w-100" src="{{ project.image.url }}" alt="{{ project.title }}" style="height: 250px; object-fit: cover;">
@@ -68,30 +67,20 @@
                                     </a>
                                 </div>
                             </div>
-                            {% comment %} {% if project.is_featured %}
-                            <div class="position-absolute top-0 end-0 m-2">
-                                <span class="badge bg-primary">En vedette</span>
-                            </div>
-                            {% endif %} {% endcomment %}
                         </div>
                         <div class="p-4">
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="text-primary small">
                                     <i class="far fa-calendar me-1"></i>
-                                    {{ project.project_date|date:"M Y" }}
+                                    {{ project.project_date|date:"M Y"|default:"Non spécifié" }}
                                 </span>
-                                <span class="badge bg-secondary">{{ project.category.name|default:"Web" }}</span>
+                                <span class="badge bg-secondary">
+                                    {{ project.get_category_display|default:"Non catégorisé" }}
+                                </span>
                             </div>
                             <h5 class="mb-2">{{ project.title }}</h5>
                             <p class="mb-3 text-muted small">{{ project.short_description|truncatewords:15 }}</p>
-                            <div class="project-technologies mb-3">
-                                {% for tech in project.technologies.all|slice:":3" %}
-                                <span class="badge bg-light text-dark me-1">{{ tech.name }}</span>
-                                {% endfor %}
-                                {% if project.technologies.count > 3 %}
-                                <span class="badge bg-light text-dark">+{{ project.technologies.count|add:"-3" }}</span>
-                                {% endif %}
-                            </div>
+                            <!-- Supprimer la partie technologies si vous n'avez pas ce modèle -->
                             <a href="{% url 'project_detail' project.pk %}" class="btn btn-outline-primary btn-sm">
                                 Voir le projet <i class="fa fa-arrow-right ms-1"></i>
                             </a>

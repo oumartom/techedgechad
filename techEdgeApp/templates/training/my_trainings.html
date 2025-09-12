@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+{% include 'head.html' %}
+
+<body>
+    {% include 'header.html' %}
+
+    <div class="container-xxl py-5">
+        <div class="container">
+            <h2 class="mb-4">Mes Formations</h2>
+            <div class="row g-4">
+                {% for reg in registrations %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow h-100">
+                        <img src="{{ reg.training.image.url }}" class="card-img-top" alt="{{ reg.training.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ reg.training.title }}</h5>
+                            <p><i class="fas fa-calendar text-primary"></i> Inscrit le {{ reg.registration_date|date:"d/m/Y" }}</p>
+                            <span class="badge bg-info">{{ reg.get_status_display }}</span>
+                            <a href="{{ reg.training.get_absolute_url }}" class="btn btn-outline-primary btn-sm mt-3">Voir détails</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-muted">Tu n’es inscrit à aucune formation pour le moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>

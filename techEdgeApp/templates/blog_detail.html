@@ -1,0 +1,340 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+{% include 'head.html' %}
+
+<body>
+    <!-- Spinner Start -->
+    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+        <div class="spinner-border position-relative text-primary" style="width: 6rem; height: 6rem;" role="status"></div>
+        <i class="fa fa-laptop-code fa-2x text-primary position-absolute top-50 start-50 translate-middle"></i>
+    </div>
+    <!-- Spinner End -->
+
+    {% include 'header.html' %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn" data-wow-delay="0.1s">
+        <div class="container text-center py-5">
+            <h1 class="display-4 text-white animated slideInDown mb-3">{{ post.title }}</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'index' %}">Accueil</a></li>
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'blog' %}">Blog</a></li>
+                    <li class="breadcrumb-item text-primary active" aria-current="page">{{ post.title|truncatewords:5 }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Blog Detail Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-5">
+                <!-- Article -->
+                <div class="col-lg-8">
+                    <div class="blog-detail wow fadeInUp" data-wow-delay="0.1s">
+                        <img class="img-fluid w-100 rounded mb-5" src="{{ post.image.url }}" alt="{{ post.title }}">
+                        
+                        <div class="d-flex mb-4">
+                            <small class="me-3"><i class="far fa-user text-primary me-2"></i>{{ post.author }}</small>
+                            <small><i class="far fa-calendar-alt text-primary me-2"></i>{{ post.published_date|date:"d M Y" }}</small>
+                            <small class="ms-3"><i class="far fa-eye text-primary me-2"></i>{{ post.views_count }} vues</small>
+                            {% if post.category %}
+                            <small class="ms-3"><i class="far fa-folder text-primary me-2"></i>{{ post.category.name }}</small>
+                            {% endif %}
+                        </div>
+                        
+                        <h1 class="mb-4">{{ post.title }}</h1>
+                        
+                        <div class="blog-content">
+                            {{ post.content|linebreaks }}
+                        </div>
+                    </div>
+
+                    {% comment %} <!-- Share Buttons -->
+                    <div class="share-buttons mt-5 wow fadeInUp" data-wow-delay="0.3s">
+                        <h4 class="mb-3">Partager cet article</h4>
+                        <div class="d-flex">
+                            <a class="btn btn-square btn-primary rounded-circle me-2" href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-square btn-primary rounded-circle me-2" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-square btn-primary rounded-circle me-2" href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-square btn-primary rounded-circle" href="#"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div> {% endcomment %}
+
+                    <!-- Related Posts -->
+                    {% if similar_posts %}
+                    <div class="related-posts mt-5 wow fadeInUp" data-wow-delay="0.5s">
+                        <h4 class="mb-4">Articles Similaires</h4>
+                        <div class="row g-4">
+                            {% for similar_post in similar_posts %}
+                            <div class="col-md-6">
+                                <div class="blog-item bg-light rounded overflow-hidden">
+                                    <div class="blog-img position-relative overflow-hidden">
+                                        <img class="img-fluid" src="{{ similar_post.image.url }}" alt="{{ similar_post.title }}" style="width: 100%; height: 200px; object-fit: cover;">
+                                        <div class="blog-overlay">
+                                            <a class="btn btn-square btn-primary rounded-circle m-1" href="{{ similar_post.get_absolute_url }}">
+                                                <i class="fa fa-link"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="p-4">
+                                        <h5 class="mb-3">{{ similar_post.title }}</h5>
+                                        <p>{{ similar_post.short_description|truncatewords:15 }}</p>
+                                        <a class="text-uppercase" href="{{ similar_post.get_absolute_url }}">Lire la suite <i class="bi bi-arrow-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+    
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <!-- Search -->
+                    <div class="mb-5 wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="input-group">
+                            <input type="text" class="form-control p-3" placeholder="Rechercher...">
+                            <button class="btn btn-primary px-4"><i class="bi bi-search"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="mb-5 wow fadeInUp" data-wow-delay="0.3s">
+                        <h4 class="mb-4">Catégories</h4>
+                        <div class="d-flex flex-column justify-content-start">
+                            {% for category in categories %}
+                            <a class="h5 fw-semi-bold bg-light rounded py-2 px-3 mb-2" href="{% url 'blog_category' category.slug %}">
+                                <i class="fas fa-arrow-right text-primary me-2"></i>{{ category.name }}
+                            </a>
+                            {% empty %}
+                            <p class="text-muted">Aucune catégorie pour le moment.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Recent Posts -->
+                    <div class="mb-5 wow fadeInUp" data-wow-delay="0.5s">
+                        <h4 class="mb-4">Articles Récents</h4>
+                        {% for recent_post in recent_posts %}
+                        <div class="d-flex mb-3">
+                            <img class="img-fluid rounded" src="{{ recent_post.image.url }}" alt="{{ recent_post.title }}" style="width: 80px; height: 80px; object-fit: cover;">
+                            <a href="{{ recent_post.get_absolute_url }}" class="h5 d-flex align-items-center bg-light px-3 mb-0">
+                                {{ recent_post.title|truncatewords:5 }}
+                            </a>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted">Aucun article récent.</p>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Tags Cloud -->
+                    <div class="mb-5 wow fadeInUp" data-wow-delay="0.7s">
+                        <h4 class="mb-4">Tags Populaires</h4>
+                        <div class="d-flex flex-wrap m-n1">
+                            <a href="#" class="btn btn-primary m-1">Technologie</a>
+                            <a href="#" class="btn btn-primary m-1">Développement</a>
+                            <a href="#" class="btn btn-primary m-1">Formation</a>
+                            <a href="#" class="btn btn-primary m-1">Innovation</a>
+                            <a href="#" class="btn btn-primary m-1">Digital</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Section Likes -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center">
+                            <button id="like-btn" class="btn btn-outline-danger me-3 like-btn" 
+                                    data-post-slug="{{ post.slug }}"
+                                    data-liked="{{ user_liked|yesno:'true,false' }}">
+                                <i class="fas fa-heart me-2"></i>
+                                <span id="likes-count">{{ post.likes_count }}</span> J'aime
+                            </button>
+                            <span class="text-muted">
+                                <i class="far fa-eye me-1"></i> {{ post.views_count }} vues
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section Commentaires -->
+                <div class="row mb-5">
+                    <div class="col-12">
+                        <h4 class="mb-4">Commentaires ({{ comments.count }})</h4>
+                        
+                        <!-- Formulaire de commentaire -->
+                        {% if user.is_authenticated %}
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <form id="comment-form" method="post" action="{% url 'add_comment' post.slug %}">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label class="form-label">Ajouter un commentaire</label>
+                                        {{ comment_form.content }}
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Commenter</button>
+                                </form>
+                            </div>
+                        </div>
+                      {% else %}
+                        <div class="alert alert-info">
+                            <div class="d-flex flex-column">
+                                <p class="mb-2">Pour laisser un commentaire :</p>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-primary">
+                                        <i class="fas fa-sign-in-alt me-1"></i>Se connecter
+                                    </a>
+                                    <a href="{% url 'register' %}?next={{ request.path }}" class="btn btn-outline-primary">
+                                        <i class="fas fa-user-plus me-1"></i>Créer un compte
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <!-- Liste des commentaires -->
+                        <div id="comments-list">
+                            {% for comment in comments %}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="card-title mb-0">{{ comment.user.username }}</h6>
+                                        <small class="text-muted">{{ comment.created_at|timesince }}</small>
+                                    </div>
+                                    <p class="card-text">{{ comment.content }}</p>
+                                    
+                                    <!-- Réponses -->
+                                    {% for reply in comment.get_replies %}
+                                    <div class="card ms-4 mt-2">
+                                        <div class="card-body py-2">
+                                            <div class="d-flex justify-content-between align-items-start mb-1">
+                                                <h6 class="card-title mb-0 small">{{ reply.user.username }}</h6>
+                                                <small class="text-muted">{{ reply.created_at|timesince }}</small>
+                                            </div>
+                                            <p class="card-text small">{{ reply.content }}</p>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+                                    <!-- Bouton répondre -->
+                                    {% if user.is_authenticated %}
+                                    <button class="btn btn-sm btn-outline-secondary mt-2 reply-btn" 
+                                            data-comment-id="{{ comment.id }}">
+                                        <i class="fas fa-reply me-1"></i>Répondre
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-comments fa-2x text-muted mb-2"></i>
+                                <p class="text-muted">Soyez le premier à commenter cet article !</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Blog Detail End -->
+
+    {% include 'footer.html' %}
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded-circle back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'websiteTechEdge/lib/wow/wow.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/waypoints/waypoints.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/counterup/counterup.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'websiteTechEdge/lib/lightbox/js/lightbox.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'websiteTechEdge/js/main.js' %}"></script>
+
+    <script>
+// Gestion des likes
+document.addEventListener('DOMContentLoaded', function() {
+    const likeBtn = document.getElementById('like-btn');
+    if (likeBtn) {
+        likeBtn.addEventListener('click', function() {
+            const postSlug = this.dataset.postSlug;
+            const isLiked = this.dataset.liked === 'true';
+            
+            fetch(`/blog/${postSlug}/like/`, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('likes-count').textContent = data.likes_count;
+                likeBtn.dataset.liked = data.liked;
+                
+                if (data.liked) {
+                    likeBtn.classList.remove('btn-outline-danger');
+                    likeBtn.classList.add('btn-danger');
+                } else {
+                    likeBtn.classList.remove('btn-danger');
+                    likeBtn.classList.add('btn-outline-danger');
+                }
+            });
+        });
+    }
+
+    // Gestion des commentaires
+    const commentForm = document.getElementById('comment-form');
+    if (commentForm) {
+        commentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Ajouter le nouveau commentaire à la liste
+                    const commentsList = document.getElementById('comments-list');
+                    const newComment = document.createElement('div');
+                    newComment.className = 'card mb-3';
+                    newComment.innerHTML = `
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="card-title mb-0">${data.user_name}</h6>
+                                <small class="text-muted">À l'instant</small>
+                            </div>
+                            <p class="card-text">${data.content}</p>
+                        </div>
+                    `;
+                    commentsList.prepend(newComment);
+                    
+                    // Réinitialiser le formulaire
+                    this.reset();
+                }
+            });
+        });
+    }
+});
+</script>
+</body>
+</html>

@@ -175,29 +175,46 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 import dj_database_url
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-import cloudinary_storage
-
 import sys
 
 # Charger .env en local
 load_dotenv()
 
+# ==================== CLOUDINARY CONFIG ====================
+# Définissez ces variables TOUJOURS, même avec des valeurs vides
+CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME", "")
+CLOUDINARY_API_KEY = os.environ.get("CLOUDINARY_API_KEY", "")
+CLOUDINARY_API_SECRET = os.environ.get("CLOUDINARY_API_SECRET", "")
+USE_CLOUDINARY = os.environ.get("USE_CLOUDINARY", "0") == "1" and all([
+    CLOUDINARY_CLOUD_NAME, 
+    CLOUDINARY_API_KEY, 
+    CLOUDINARY_API_SECRET
+])
+# ==========================================================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-change-me")
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-change-me-in-production-12345")
 DEBUG = os.environ.get("DEBUG", "1") == "1"
 
+# Détection de l'environnement
+IS_LOCAL = DEBUG
+IS_PRODUCTION = not DEBUG
+
 # ALLOWED_HOSTS
-if DEBUG:
-    ALLOWED_HOSTS = ["*"]
+if IS_LOCAL:
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 else:
-    ALLOWED_HOSTS = [h.strip() for h in os.environ.get("ALLOWED_HOSTS", "").split(",") if h]
+    allowed_hosts = os.environ.get("ALLOWED_HOSTS", "")
+    ALLOWED_HOSTS = [h.strip() for h in allowed_hosts.split(",")] if allowed_hosts else []
+    if not ALLOWED_HOSTS:
+        ALLOWED_HOSTS = ["*"]  # Fallback pour production
 
-CSRF_TRUSTED_ORIGINS = [f"https://{h}" for h in ALLOWED_HOSTS if h] + ["https://*.onrender.com"]
+CSRF_TRUSTED_ORIGINS = []
+if not IS_LOCAL:
+    CSRF_TRUSTED_ORIGINS = [f"https://{h}" for h in ALLOWED_HOSTS if h] + ["https://*.onrender.com"]
 
+# Applications de base
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -205,10 +222,32 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',
-    'cloudinary',
     'techEdgeApp',
 ]
+
+# Configuration Cloudinary - UNIQUEMENT si explicitement demandé
+if USE_CLOUDINARY:
+    INSTALLED_APPS.extend(['cloudinary_storage', 'cloudinary'])
+    
+    # Configuration Cloudinary
+    import cloudinary
+    import cloudinary.uploader
+    import cloudinary.api
+    
+    cloudinary.config(
+        cloud_name=CLOUDINARY_CLOUD_NAME,
+        api_key=CLOUDINARY_API_KEY,
+        api_secret=CLOUDINARY_API_SECRET,
+        secure=True
+    )
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    print("✅ Cloudinary configuré avec succès!")
+else:
+    # Stockage local par défaut
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / "media"
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    print("ℹ️  Utilisation du stockage local")
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -246,7 +285,7 @@ DATABASES = {
     'default': dj_database_url.config(
         default=os.environ.get('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
         conn_max_age=600,
-        ssl_require=not DEBUG
+        ssl_require=IS_PRODUCTION
     )
 }
 
@@ -261,15 +300,21 @@ AUTH_PASSWORD_VALIDATORS = [
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} {asctime} {module} {message}",
+            "style": "{",
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
-            "stream": sys.stdout,
+            "formatter": "verbose",
         },
     },
     "root": {
         "handlers": ["console"],
-        "level": "DEBUG",
+        "level": "INFO" if IS_PRODUCTION else "DEBUG",
     },
 }
 
@@ -279,48 +324,38 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# URL d'accès aux fichiers statiques
+# Static files
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Configuration Cloudinary (Médias)
-CLOUDINARY_CLOUD_NAME = os.environ.get("CLOUDINARY_CLOUD_NAME")
-CLOUDINARY_API_KEY = os.environ.get("CLOUDINARY_API_KEY")
-CLOUDINARY_API_SECRET = os.environ.get("CLOUDINARY_API_SECRET")
-
-# Variable pour déterminer si Cloudinary est utilisé
-USE_CLOUDINARY = all([CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET])
-
-if USE_CLOUDINARY:
-    cloudinary.config(
-        cloud_name=CLOUDINARY_CLOUD_NAME,
-        api_key=CLOUDINARY_API_KEY,
-        api_secret=CLOUDINARY_API_SECRET,
-        secure=True
-    )
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    # Configuration pour les médias avec Cloudinary
-    MEDIA_URL = '/media/'  # Nécessaire même avec Cloudinary
-    print("✅ Cloudinary configuré avec succès!")
-else:
-    print("⚠️ ATTENTION: Variables Cloudinary manquantes. Utilisation du stockage local.")
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / "media"
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = os.environ.get("EMAIL_HOST")
-EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
-EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "False") == "True"
-EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", "False") == "True"
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# Email configuration
+if IS_LOCAL:
+    # En local, utilisez la console pour les emails
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    print("📧 Mode local: Emails affichés dans la console")
+else:
+    # En production, utilisez SMTP
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = os.environ.get("EMAIL_HOST", "smtp.gmail.com")
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", 587))
+    EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "True") == "True"
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+    
+# URLs de redirection après authentification
+# Redirections après connexion/déconnexion
+LOGIN_REDIRECT_URL = '/'  # Après connexion réussie
+LOGOUT_REDIRECT_URL = '/'  # Après déconnexion
+LOGIN_URL = '/accounts/login/'  # Page de connexion
+
+# Session settings (important pour la déconnexion)
+SESSION_COOKIE_AGE = 1209600  # 2 weeks in seconds
+SESSION_SAVE_EVERY_REQUEST = True
 
 #config cloudinary
 

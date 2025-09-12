@@ -1,3 +1,10 @@
-".env" 
+# Environnement
 .env
-.env
+*.env.local
+
+# Database
+*.sqlite3
+*.db
+
+# Media
+/media/

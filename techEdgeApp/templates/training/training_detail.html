@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+{% include 'head.html' %}
+
+<body>
+    {% include 'header.html' %}
+
+    <!-- Page Header -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn">
+        <div class="container text-center py-5">
+            <h1 class="display-4 text-white animated slideInDown mb-3">{{ training.title }}</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'training_list' %}">Formations</a></li>
+                    <li class="breadcrumb-item text-primary active">{{ training.title }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Formation -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Contenu principal -->
+                <div class="col-lg-8">
+                    <img src="{{ training.image.url }}" class="img-fluid rounded mb-4" alt="{{ training.title }}">
+                    <h2>{{ training.title }}</h2>
+                    <p>{{ training.full_description }}</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-clock text-primary"></i> Durée: {{ training.duration }}</li>
+                        <li><i class="fas fa-calendar text-primary"></i> Début: {{ training.start_date }} - Fin: {{ training.end_date }}</li>
+                        <li><i class="fas fa-users text-primary"></i> Places restantes: {{ training.available_seats }}</li>
+                    </ul>
+                </div>
+
+                <!-- Inscription -->
+                <div class="col-lg-4">
+                    <div class="card shadow p-4 text-center">
+                        {% if user_has_registered %}
+                            <p class="alert alert-info">Tu es déjà inscrit à cette formation.</p>
+                        {% elif training.is_available %}
+                            <!-- Bouton pour ouvrir le modal -->
+                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#registrationModal">
+                                S'inscrire à cette formation
+                            </button>
+                        {% else %}
+                            <p class="alert alert-danger">Cette formation est complète.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Modal d'inscription -->
+                {% if training.slug %}
+                <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form method="post" action="{% url 'register_training' training.slug %}">
+                                {% csrf_token %}
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="registrationModalLabel">Inscription à {{ training.title }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {{ registration_form.as_p }}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                                    <button type="submit" class="btn btn-primary">S'inscrire</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Formations similaires -->
+            <h3 class="mt-5">Formations similaires</h3>
+            <div class="row g-4">
+                {% for similar in similar_trainings %}
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <img src="{{ similar.image.url }}" class="card-img-top" alt="{{ similar.title }}">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ similar.title }}</h6>
+                            <a href="{{ similar.get_absolute_url }}" class="btn btn-outline-primary btn-sm">Voir</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Aucune autre formation disponible.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+{% include 'head.html' %}
+
+<body>
+    {% include 'header.html' %}
+
+    <!-- Page Header -->
+    <div class="container-fluid page-header py-5 mb-5 wow fadeIn">
+        <div class="container text-center py-5">
+            <h1 class="display-4 text-white animated slideInDown mb-3">{{ training.title }}</h1>
+            <nav aria-label="breadcrumb animated slideInDown">
+                <ol class="breadcrumb justify-content-center mb-0">
+                    <li class="breadcrumb-item"><a class="text-white" href="{% url 'training_list' %}">Formations</a></li>
+                    <li class="breadcrumb-item text-primary active">{{ training.title }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Formation -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <img src="{{ training.image.url }}" class="img-fluid rounded mb-4" alt="{{ training.title }}">
+                    <h2>{{ training.title }}</h2>
+                    <p>{{ training.full_description }}</p>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-clock text-primary"></i> Durée: {{ training.duration }}</li>
+                        <li><i class="fas fa-calendar text-primary"></i> Début: {{ training.start_date }} - Fin: {{ training.end_date }}</li>
+                        <li><i class="fas fa-users text-primary"></i> Places restantes: {{ training.available_seats }}</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                <div class="card shadow p-4 text-center">
+                    {% if user_has_registered %}
+                        <p class="alert alert-info">Tu es déjà inscrit à cette formation.</p>
+                    {% elif training.is_available %}
+                        <!-- Bouton pour ouvrir le modal -->
+                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#registrationModal">
+                            S'inscrire à cette formation
+                        </button>
+                    {% else %}
+                        <p class="alert alert-danger">Cette formation est complète.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Modal d'inscription -->
+            <div class="modal fade" id="registrationModal" tabindex="-1" aria-labelledby="registrationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <form method="post" action="{% url 'register_training' training.slug %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="registrationModalLabel">Inscription à {{ training.title }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                    </div>
+                    <div class="modal-body">
+                    {{ registration_form.as_p }}
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">S'inscrire</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div>
+
+
+            <h3 class="mt-5">Formations similaires</h3>
+            <div class="row g-4">
+                {% for similar in similar_trainings %}
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100">
+                        <img src="{{ similar.image.url }}" class="card-img-top" alt="{{ similar.title }}">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ similar.title }}</h6>
+                            <a href="{{ similar.get_absolute_url }}" class="btn btn-outline-primary btn-sm">Voir</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Aucune autre formation disponible.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>  {% endcomment %}
+
+
