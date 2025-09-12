@@ -9,3 +9,5 @@
 # Media
 /media/
 .env.production
+.env
+.env.production
