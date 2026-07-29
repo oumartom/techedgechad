@@ -1,7 +1,7 @@
 import os
 import django
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "techEdgeWebsite.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "techEdgeWebSite.settings")
 django.setup()
 
 from django.contrib.auth import get_user_model
